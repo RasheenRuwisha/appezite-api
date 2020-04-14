@@ -146,7 +146,6 @@ exports.queryAllBusiness = async function () {
      */
 exports.queryUser = async function (email) {
     try {
-        console.log(email)
         var response = {};
 
         // Create a new file system based wallet for managing identities.
@@ -200,7 +199,6 @@ exports.queryAllCategories = async function (email, businessId) {
         const walletPath = path.join(process.cwd(), '/wallet');
         const wallet = new FileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
-        console.log(email)
         // Checking wether the user exists in the wallet
         const userExists = await wallet.exists(email);
         if (!userExists) {
@@ -235,7 +233,7 @@ exports.queryAllCategories = async function (email, businessId) {
     }
 }
 
-exports.createCategory = async function (key, name, email, number, image) {
+exports.createCategory = async function (key, email, category) {
     try {
 
         var response = {};
@@ -256,14 +254,12 @@ exports.createCategory = async function (key, name, email, number, image) {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        console.log(`Holeee shet`);
 
         await gateway.connect(ccp, {
             wallet,
             identity: email,
             discovery: gatewayDiscovery
         });
-        console.log(`Holeee shet1`);
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -272,7 +268,7 @@ exports.createCategory = async function (key, name, email, number, image) {
         const contract = network.getContract('appezite');
 
         // Submit the transaction to create the Business with the provided details.
-        await contract.submitTransaction('addCategories', number, key, name, image);
+        await contract.submitTransaction('addCategories', JSON.stringify(category));
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.
@@ -288,7 +284,7 @@ exports.createCategory = async function (key, name, email, number, image) {
     }
 }
 
-exports.updateTheme = async function (key, email, background, logo, starterscreen, colorDark, colorLight) {
+exports.updateTheme = async function (key, email, appconfig, theme) {
     try {
 
         var response = {};
@@ -309,14 +305,12 @@ exports.updateTheme = async function (key, email, background, logo, starterscree
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        console.log(`Holeee shet`);
 
         await gateway.connect(ccp, {
             wallet,
             identity: email,
             discovery: gatewayDiscovery
         });
-        console.log(`Holeee shet1`);
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -325,7 +319,7 @@ exports.updateTheme = async function (key, email, background, logo, starterscree
         const contract = network.getContract('appezite');
 
         // Submit the transaction to create the Business with the provided details.
-        await contract.submitTransaction('updateBusinessTheme', key, background, logo, starterscreen, colorDark, colorLight);
+        await contract.submitTransaction('updateBusinessTheme', key, JSON.stringify(appconfig), JSON.stringify(theme));
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.
@@ -409,14 +403,12 @@ exports.updateBusiness = async function (email, businessid, businessDetails) {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        console.log(`Holeee shet`);
 
         await gateway.connect(ccp, {
             wallet,
             identity: email,
             discovery: gatewayDiscovery
         });
-        console.log(`Holeee shet1`);
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -462,14 +454,12 @@ exports.createProduct = async function (businessId, email, product) {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        console.log(`Holeee shet`);
 
         await gateway.connect(ccp, {
             wallet,
             identity: email,
             discovery: gatewayDiscovery
         });
-        console.log(`Holeee shet1`);
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -478,7 +468,7 @@ exports.createProduct = async function (businessId, email, product) {
         const contract = network.getContract('appezite');
 
         // Submit the transaction to create the Business with the provided details.
-        await contract.submitTransaction('addProduct', businessId, JSON.stringify(product));
+        await contract.submitTransaction('addProduct',JSON.stringify(product));
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.
@@ -603,14 +593,12 @@ exports.removeProduct = async function (businessId, email, product) {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        console.log(`Holeee shet`);
 
         await gateway.connect(ccp, {
             wallet,
             identity: email,
             discovery: gatewayDiscovery
         });
-        console.log(`Holeee shet1`);
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -620,6 +608,59 @@ exports.removeProduct = async function (businessId, email, product) {
 
         // Submit the transaction to create the Business with the provided details.
         await contract.submitTransaction('removeProduct', product, businessId);
+        console.log('Transaction has been submitted');
+
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+        response.msg = 'Category Creation Transaction has been submitted';
+        return response;
+
+    } catch (error) {
+        console.error(`Failed to submit transaction: ${error}`);
+        response.error = error.message;
+        return response;
+    }
+}
+
+
+
+exports.removeCategory = async function (businessId, email, category) {
+    try {
+
+        var response = {};
+
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), '/wallet');
+        const wallet = new FileSystemWallet(walletPath);
+
+        console.log(`Wallet path: ${walletPath}`);
+        // Checking wether the user exists in the wallet
+        const userExists = await wallet.exists(email);
+        if (!userExists) {
+            console.log('An identity for the user' + email + 'does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            response.error = 'An identity for the user ' + email + ' does not exist in the wallet. Register admin first';
+            return response;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+
+        await gateway.connect(ccp, {
+            wallet,
+            identity: email,
+            discovery: gatewayDiscovery
+        });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const contract = network.getContract('appezite');
+
+        // Submit the transaction to create the Business with the provided details.
+        await contract.submitTransaction('removeCategory', category, businessId);
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.
@@ -656,14 +697,12 @@ exports.updateProduct = async function (businessId, email, product) {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        console.log(`Holeee shet`);
 
         await gateway.connect(ccp, {
             wallet,
             identity: email,
             discovery: gatewayDiscovery
         });
-        console.log(`Holeee shet1`);
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -732,7 +771,7 @@ exports.queryCategory = async function (email, categoryId) {
     }
 }
 
-exports.updateCategory = async function (businessId, email, categoryId, image, name) {
+exports.updateCategory = async function (email, category) {
     try {
 
         var response = {};
@@ -753,14 +792,12 @@ exports.updateCategory = async function (businessId, email, categoryId, image, n
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        console.log(`Holeee shet`);
 
         await gateway.connect(ccp, {
             wallet,
             identity: email,
             discovery: gatewayDiscovery
         });
-        console.log(`Holeee shet1`);
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -769,7 +806,7 @@ exports.updateCategory = async function (businessId, email, categoryId, image, n
         const contract = network.getContract('appezite');
 
         // Submit the transaction to create the Business with the provided details.
-        await contract.submitTransaction('updateCategory', businessId, categoryId, image, name);
+        await contract.submitTransaction('updateCategory', JSON.stringify(category));
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.
@@ -806,14 +843,12 @@ exports.updatePickupHours = async function (email, businessid, pickUpHours) {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        console.log(`Holeee shet`);
 
         await gateway.connect(ccp, {
             wallet,
             identity: email,
             discovery: gatewayDiscovery
         });
-        console.log(`Holeee shet1`);
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -1351,7 +1386,7 @@ exports.updatePurchaseOrderStatus = async function (email, status, businessId,or
 }
 
 
-exports.updateAPKURL = async function (email, businessid, apkUrl) {
+exports.updateAPKURL = async function (email, businessid, apkUrl,appid) {
     try {
 
         var response = {};
@@ -1372,14 +1407,12 @@ exports.updateAPKURL = async function (email, businessid, apkUrl) {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        console.log(`Holeee shet`);
 
         await gateway.connect(ccp, {
             wallet,
             identity: email,
             discovery: gatewayDiscovery
         });
-        console.log(`Holeee shet1`);
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
@@ -1388,7 +1421,7 @@ exports.updateAPKURL = async function (email, businessid, apkUrl) {
         const contract = network.getContract('appezite');
 
         // Submit the transaction to create the Business with the provided details.
-        await contract.submitTransaction('addApkURL', businessid, apkUrl);
+        await contract.submitTransaction('addApkURL', businessid, apkUrl,appid);
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.
@@ -1396,6 +1429,215 @@ exports.updateAPKURL = async function (email, businessid, apkUrl) {
 
         response.msg = 'Category Creation Transaction has been submitted';
         return response;
+
+    } catch (error) {
+        console.error(`Failed to submit transaction: ${error}`);
+        response.error = error.message;
+        return response;
+    }
+}
+
+
+exports.getPurchaseOrder = async function (email, businessId,orderId) {
+    try {
+
+        var response = {};
+
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), '/wallet');
+        const wallet = new FileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Checking wether the user exists in the wallet
+        const userExists = await wallet.exists(email);
+        if (!userExists) {
+            console.log('An identity for the user '+email+' does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            response.error = 'An identity for the user '+email+' does not exist in the wallet. Register admin firs' +
+                    't';
+            return response;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, {
+            wallet,
+            identity: email,
+            discovery: gatewayDiscovery
+        });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const contract = network.getContract('appezite');
+
+        // Submit the transaction to create the Business with the provided details.
+        const result = await contract.submitTransaction('getOrder', businessId,orderId);
+        console.log('Transaction has been submitted');
+
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+        response.msg = 'Business Creation Transaction has been submitted';
+        return result;
+
+    } catch (error) {
+        console.error(`Failed to submit transaction: ${error}`);
+        response.error = error.message;
+        return response;
+    }
+}
+
+
+exports.batchUploadProduct = async function (email, businessId,products) {
+    try {
+
+        var response = {};
+
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), '/wallet');
+        const wallet = new FileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Checking wether the user exists in the wallet
+        const userExists = await wallet.exists(email);
+        if (!userExists) {
+            console.log('An identity for the user '+email+' does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            response.error = 'An identity for the user '+email+' does not exist in the wallet. Register admin firs' +
+                    't';
+            return response;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, {
+            wallet,
+            identity: email,
+            discovery: gatewayDiscovery
+        });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const contract = network.getContract('appezite');
+
+        // Submit the transaction to create the Business with the provided details.
+        const result = await contract.submitTransaction('batchProductUpload', businessId,JSON.stringify(products));
+        console.log('Transaction has been submitted');
+
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+        response.msg = 'Business Creation Transaction has been submitted';
+        return result;
+
+    } catch (error) {
+        console.error(`Failed to submit transaction: ${error}`);
+        response.error = error.message;
+        return response;
+    }
+}
+
+
+
+exports.getCategoryByName = async function (email, businessId,name) {
+    try {
+
+        var response = {};
+
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), '/wallet');
+        const wallet = new FileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Checking wether the user exists in the wallet
+        const userExists = await wallet.exists(email);
+        if (!userExists) {
+            console.log('An identity for the user '+email+' does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            response.error = 'An identity for the user '+email+' does not exist in the wallet. Register admin firs' +
+                    't';
+            return response;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, {
+            wallet,
+            identity: email,
+            discovery: gatewayDiscovery
+        });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const contract = network.getContract('appezite');
+
+        // Submit the transaction to create the Business with the provided details.
+        const result = await contract.submitTransaction('getCategoryByName', businessId,name);
+        console.log('Transaction has been submitted');
+
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+        response.msg = 'Business Creation Transaction has been submitted';
+        return result;
+
+    } catch (error) {
+        console.error(`Failed to submit transaction: ${error}`);
+        response.error = error.message;
+        return response;
+    }
+}
+
+
+exports.batchUploadCategory = async function (email, businessId,category) {
+    try {
+
+        var response = {};
+
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), '/wallet');
+        const wallet = new FileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Checking wether the user exists in the wallet
+        const userExists = await wallet.exists(email);
+        if (!userExists) {
+            console.log('An identity for the user '+email+' does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            response.error = 'An identity for the user '+email+' does not exist in the wallet. Register admin firs' +
+                    't';
+            return response;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, {
+            wallet,
+            identity: email,
+            discovery: gatewayDiscovery
+        });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const contract = network.getContract('appezite');
+
+        // Submit the transaction to create the Business with the provided details.
+        const result = await contract.submitTransaction('batchCategoryUpload', businessId,JSON.stringify(category));
+        console.log('Transaction has been submitted');
+
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+
+        response.msg = 'Business Creation Transaction has been submitted';
+        return result;
 
     } catch (error) {
         console.error(`Failed to submit transaction: ${error}`);

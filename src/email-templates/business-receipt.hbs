@@ -1,0 +1,168 @@
+<div id=":1ju" class="ii gt"><div id=":1jv" class="a3s aXjCH "><u></u>
+
+    
+    
+
+
+    <div style="font-family:'Open Sans',Arial,sans-serif;color:#464646;font-size:14px">
+    <div style="background-color:#f5f5f5;margin:3%;border:1px solid #d0d0d0">
+    
+        <div style="text-align:center;margin:20px 10px 10px 10px">
+            <img src="https://i.ibb.co/61HR17G/Screenshot-2020-03-18-at-14-08-42.png" style="width:auto;max-width:100%;height:auto;max-height:60px" class="CToWUd">
+        </div>
+    
+        <div style="padding-bottom:10px;font-family:'Raleway',sans-serif;font-size:17px;text-align:center">
+            <b>New Sales Order Received</b>
+            <b>Check for all details via the Merchant Web Portal.</b>
+        </div>
+    
+        <div style="padding:10px">
+            <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Order No</b></div>
+                <div style="display:inline-block;float:right">{{orderId}}</div>
+            </div>
+    
+            <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>User Account Id</b></div>
+                <div style="display:inline-block;float:right"><a href="mailto:sheen.ruwisha@gmail.com" target="_blank">{{userId}}</a></div>
+            </div>
+    
+            <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Collector Name</b></div>
+                <div style="display:inline-block;float:right">
+                                        {{userName}}
+                                </div>
+            </div>
+    
+            <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>User Account Name</b></div>
+                <div style="display:inline-block;float:right">
+                    {{userName}}
+                </div>
+            </div>
+    
+            <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Additional Comments</b></div>
+                <div style="display:inline-block;float:right">
+                    {{comments}}
+                </div>
+            </div>
+    
+            <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Order Collection Method</b></div>
+                <div style="display:inline-block;float:right">
+                                        {{collectionMethod}}
+                                </div>
+            </div>
+    
+                        <div style="padding:5px 0px">
+                    <div style="display:inline-block;text-align:left"><b>Delivery Address</b></div>
+                    <div style="display:inline-block;float:right">
+                        {{address}}
+                    </div>
+                </div>
+            
+            <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Mobile Number</b></div>
+                <div style="display:inline-block;float:right">{{number}}</div>
+            </div>
+            
+                    <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Purchased Channel</b></div>
+                <div style="display:inline-block;float:right">
+                                        N/A
+                                </div>
+            </div>
+                    
+            <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Purchase Date</b></div>
+                <div style="display:inline-block;float:right">{{date}}</div>
+            </div>
+    
+        </div>
+    
+        <hr style="width:100%;margin-bottom:0px;border-top:none;border-bottom:1px solid #d0d0d0">
+    
+        <div style="padding:10px">
+            <table style="width:100%">
+                                <tbody>
+                                    
+                                    {{#each products}}
+    <tr>
+                        <td>
+                            {{product}}
+                                                                        </td>
+                        <td style="text-align:right;vertical-align:top">x{{qty}}</td>
+                        <td style="text-align:right;vertical-align:top">{{price}}</td>
+                    </tr>
+{{/each}}
+                
+                
+            </tbody></table>
+        </div>
+    
+        <hr style="width:100%;margin-bottom:0px;border-top:none;border-bottom:1px solid #d0d0d0">
+    
+        <div style="padding:10px">
+            <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Sub Total</b></div>
+                <div style="display:inline-block;float:right">+{{subTotal}}.00</div>
+            </div>
+            
+                    <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Tax Amount</b></div>
+                <div style="display:inline-block;float:right">
+                        0.0
+                </div>
+            </div>
+            
+                    <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Delivery Charge</b></div>
+                <div style="display:inline-block;float:right">
+                                        {{deliveryCharge}}
+                                </div>
+            </div>
+            
+            <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Service Charge</b></div>
+                <div style="display:inline-block;float:right">
+                                        0.00
+                                </div>
+            </div>
+    
+            <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Discount</b></div>
+                <div style="display:inline-block;float:right">
+                                        0.00
+                                </div>
+            </div>
+    
+                </div>
+    
+        <hr style="width:100%;margin-bottom:0px;border-top:none;border-bottom:1px solid #d0d0d0">
+    
+        <div style="padding:10px">
+            <div style="padding:5px 0px">
+                <div style="display:inline-block;text-align:left"><b>Grand Total</b></div>
+                <div style="display:inline-block;float:right"><b>{{grandTotal}}.00</b></div>
+            </div>
+        </div>
+    
+        <div style="background:#e8e8e8;color:grey;padding:10px;font-size:12px;text-align:center">
+            <a href="https://apptizer.io/" style="color:grey;text-decoration:none" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://apptizer.io/&amp;source=gmail&amp;ust=1584606200703000&amp;usg=AFQjCNHtIt-BFu5SC8SvOU5UQU2fPl5XIw"><b><span class="il">Apptizer</span> Inc.</b></a>
+            <br> Copyright © 2019. All Rights Reserved.
+            <br>
+            <a href="https://www.facebook.com/ApptizerIO-423959047811752" style="text-decoration:none" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.facebook.com/ApptizerIO-423959047811752&amp;source=gmail&amp;ust=1584606200704000&amp;usg=AFQjCNFbJ5oPzrj4wPsIPbGJArHDhD5Bwg">
+                <img src="https://ci6.googleusercontent.com/proxy/IfDHKGb-nJ0BVnf10LbS83uoAcKLfUGEprRR9IKOiqU-GAwIzn0YCrvGz4S-pRqU-7gY1kMmrXGm9rmYtlqt7afymwEmWsPsD38utNPPR9W61IR50iejBgI2ydB67WAD_d7WH2hgsAUZ=s0-d-e1-ft#https://merchant.apptizer.io/apptizer/app-images/common/email_social_icon_facebook.png" style="width:24px;margin-top:5px;margin-right:5px" class="CToWUd">
+            </a>
+            <a href="https://twitter.com/Apptizer_io" style="text-decoration:none" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://twitter.com/Apptizer_io&amp;source=gmail&amp;ust=1584606200704000&amp;usg=AFQjCNGymuZQefo1hB3vnfr2DH6sznkwug">
+                <img src="https://ci6.googleusercontent.com/proxy/McW6hI41mrf95UvyjzLGZsiVwY3zJLUuf2YP9UnPOKqgQcPnCEv2E0QvaZunbCxIV3qpq5l_3xQkMcG1YnUXzvMBZmYvB6IZ5MtuS16leI7WEuHP0P2x0syL1sJKmYlPSXRpP49bnLg=s0-d-e1-ft#https://merchant.apptizer.io/apptizer/app-images/common/email_social_icon_twitter.png" style="width:24px;margin-top:5px;margin-right:5px" class="CToWUd">
+            </a>
+            <a href="https://www.instagram.com/apptizer_io/" style="text-decoration:none" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.instagram.com/apptizer_io/&amp;source=gmail&amp;ust=1584606200704000&amp;usg=AFQjCNHc3p5hcGrBe8OGDxe8qV9K9mdIng">
+                <img src="https://ci6.googleusercontent.com/proxy/Z1f1h-AMxnessOrSwEqCEUSANAOPin9aXa-zEO2euCL7rCuo9cMAGOtMXd5evc5AYTJLKtna4NqIOd5q8OkhqUFDvT_daB7S_qaRllm4Mpd7rMRAdSX9gj8Ufq1qz4IZQHg9HJFZokVM0g=s0-d-e1-ft#https://merchant.apptizer.io/apptizer/app-images/common/email_social_icon_instagram.png" style="width:24px;margin-top:5px;margin-right:5px" class="CToWUd">
+            </a><div class="yj6qo"></div><div class="adL">
+        </div></div><div class="adL">
+    </div></div><div class="adL">
+    </div></div><div class="adL">
+    
+    </div></div></div>

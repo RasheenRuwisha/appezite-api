@@ -21,7 +21,7 @@ const ccpPath = path.join(process.cwd(), connection_file);
 const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
 const ccp = JSON.parse(ccpJSON);
 
-async function main(userName) {
+async function main(userName,role) {
     try {
 
         // Create a new file system based wallet for managing identities.
@@ -53,7 +53,7 @@ async function main(userName) {
         const adminIdentity = gateway.getCurrentIdentity();
 
         // Register the user, enroll the user, and import the new identity into the wallet.
-        const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: userName, role: 'client' }, adminIdentity);
+        const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: userName, role: role }, adminIdentity);
         const enrollment = await ca.enroll({ enrollmentID: userName, enrollmentSecret: secret });
         const userIdentity = X509WalletMixin.createIdentity(orgMSPID, enrollment.certificate, enrollment.key.toBytes());
         wallet.import(userName, userIdentity);
