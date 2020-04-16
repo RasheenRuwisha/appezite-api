@@ -250,6 +250,11 @@ router.post('/loginBusinessUser', (req, res) => {
                     })
                 })
         })
+        .catch(() => {
+            res
+                .status(400)
+                .json({msg: "User not found."})
+        });
 
 })
 
@@ -271,6 +276,11 @@ router.post('/getBusinessUser', auth, (req, res) => {
             console.log(JSON.parse(response))
             res.json(JSON.parse(response))
         })
+        .catch(() => {
+            res
+                .status(400)
+                .json({msg: "User not found."})
+        });
 })
 
 /**
